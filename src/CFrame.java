@@ -113,7 +113,7 @@ public class CFrame extends JPanel implements ActionListener {
                 people.get(i).collision(people.get(k));
             }
         }
-        System.out.println(Person.numInfected);
+        
         point.add(new Point(time/16, Person.numInfected));
         g.setColor(Color.black);
         for(Point p: point){
