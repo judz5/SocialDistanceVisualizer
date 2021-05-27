@@ -1,13 +1,14 @@
 # SocialDistanceVisualizer
 
-### Create a visual representation of the effectiveness of Social Distancing with java Swing.
+### Create a visual representation of the effect social distancing has on lowering the speed of covid infections via Java Swing.
 ___
-First project after AP Computer Science A
+Grey = Not Infected <br>
+Red = Infected <br>
+Cyan = Cured <br>
 
 ### Feautures to add
- - Slider to choose percentage of people "Social Distancing"
- - Reset Button
- - Move Graph to better location
+ - Key
+ - Better Looking Graph (& fix Location)
 
 Inspiration and Help from
  - [DomDavid](https://www.youtube.com/watch?v=0UdlEHjm-gU)
