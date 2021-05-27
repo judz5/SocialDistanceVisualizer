@@ -11,9 +11,10 @@ public class Person {
     // Recovery Time
     int recoveryTime;
 
+    static double percentDist;
+
     static int numInfected = 0;
 
-    static boolean socialDist = false;
 
     public Person(){
 
@@ -25,15 +26,12 @@ public class Person {
             numInfected+=1;// 8 percent of original population will be infected
         }
 
-        if(true){
-            if(Math.random()<.20){
-                vx = (int)(Math.random()*(10+1)+-5);
-                vy = (int)(Math.random()*(10+1)+-5);
-            }
+        percentDist = CFrame.getPercent();
+
+        if(Math.random()>=percentDist){
+            vx = (int)(Math.random()*(10+1)+-5);
+            vy = (int)(Math.random()*(10+1)+-5);
         }
-
-
-
 
         recoveryTime = (int)(Math.random()*(7000-5000+1)+5000);
 
@@ -86,6 +84,10 @@ public class Person {
 
         g.fillOval(x, y, 10, 10);
 
+    }
+
+    public static void resetNumInfected(){
+        numInfected = 0;
     }
 
 }

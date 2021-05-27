@@ -1,4 +1,7 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +12,9 @@ public class CFrame extends JPanel implements ActionListener {
     ArrayList<Person> people = new ArrayList<Person>();
     ArrayList<Point> point = new ArrayList<Point>();
     int time = 0;
-    JCheckBox dist = new JCheckBox("Social Distance");
+
+    public static int percent;
+    int population = 100;
 
     public static void main(String[] args) {
         CFrame c = new CFrame();
@@ -17,15 +22,59 @@ public class CFrame extends JPanel implements ActionListener {
 
     public CFrame() {
         JFrame f = new JFrame("Social Distancing Visualizer");
-        f.setSize(800, 800);
+        f.setSize(800, 700);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setResizable(false);
 
+        JButton redo = new JButton("Restart");
+        JSlider socialDist = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+        JSlider pop = new JSlider(JSlider.HORIZONTAL, 0, 200, 100);
 
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        JPanel subPanel = new JPanel();
 
-        for(int i = 0; i<100; i++){
+        subPanel.add(redo);
+        redo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                restart();
+            }
+        });
+        subPanel.add(socialDist);
+        socialDist.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                percent = socialDist.getValue();
+            }
+        });
+        subPanel.add(pop);
+        pop.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                population = pop.getValue();
+            }
+        });
+
+        socialDist.setBorder(BorderFactory.createTitledBorder("Percent Social Distancing"));
+        socialDist.setMajorTickSpacing(20);
+        socialDist.setMinorTickSpacing(5);
+        socialDist.setPaintLabels(true);
+        socialDist.setPaintLabels(true);
+
+        pop.setBorder(BorderFactory.createTitledBorder("Total Population"));
+        pop.setMajorTickSpacing(100);
+        pop.setMinorTickSpacing(5);
+        pop.setPaintLabels(true);
+        pop.setPaintLabels(true);
+
+        panel.add(subPanel, BorderLayout.SOUTH);
+        f.add(panel, BorderLayout.SOUTH);
+
+        for(int i = 0; i<=population; i++){
             people.add(new Person()); // adds population (.08 are infected)
         }
+
         f.add(this);
         f.setVisible(true);
 
@@ -57,6 +106,21 @@ public class CFrame extends JPanel implements ActionListener {
         }
 
     }
+
+    public void restart(){
+        people.clear();
+        for(int i = 0; i<population; i++){
+            people.add(new Person()); // adds population (.08 are infected)
+        }
+        point.clear();
+        time = 0;
+        Person.resetNumInfected();
+    }
+
+    public static double getPercent(){
+        return percent * .01;
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
