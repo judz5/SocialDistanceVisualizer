@@ -15,6 +15,7 @@ public class CFrame extends JPanel implements ActionListener {
 
     public static int percent;
     int population = 100;
+    public static int infectedPop = 8;
 
     public static void main(String[] args) {
         CFrame c = new CFrame();
@@ -29,6 +30,7 @@ public class CFrame extends JPanel implements ActionListener {
         JButton redo = new JButton("Restart");
         JSlider socialDist = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
         JSlider pop = new JSlider(JSlider.HORIZONTAL, 0, 200, 100);
+        JSlider infected = new JSlider(JSlider.HORIZONTAL, 0, 100, 8);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -55,6 +57,14 @@ public class CFrame extends JPanel implements ActionListener {
                 population = pop.getValue();
             }
         });
+        subPanel.add(infected);
+        infected.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                infectedPop = infected.getValue();
+            }
+        });
+
 
         socialDist.setBorder(BorderFactory.createTitledBorder("Percent Social Distancing"));
         socialDist.setMajorTickSpacing(20);
@@ -67,6 +77,12 @@ public class CFrame extends JPanel implements ActionListener {
         pop.setMinorTickSpacing(5);
         pop.setPaintLabels(true);
         pop.setPaintLabels(true);
+
+        infected.setBorder(BorderFactory.createTitledBorder("Initial Infected Population"));
+        infected.setMajorTickSpacing(20);
+        infected.setMinorTickSpacing(5);
+        infected.setPaintLabels(true);
+        infected.setPaintLabels(true);
 
         panel.add(subPanel, BorderLayout.SOUTH);
         f.add(panel, BorderLayout.SOUTH);
@@ -86,8 +102,6 @@ public class CFrame extends JPanel implements ActionListener {
     public void paint(Graphics g){
         time+=16;
 
-        point.add(new Point(time/16, Person.numInfected));
-
         super.paintComponent(g);
 
         for(Person p: people){
@@ -99,7 +113,8 @@ public class CFrame extends JPanel implements ActionListener {
                 people.get(i).collision(people.get(k));
             }
         }
-
+        System.out.println(Person.numInfected);
+        point.add(new Point(time/16, Person.numInfected));
         g.setColor(Color.black);
         for(Point p: point){
             g.fillOval(p.time, 200-p.value, 5, 5);
@@ -108,19 +123,23 @@ public class CFrame extends JPanel implements ActionListener {
     }
 
     public void restart(){
+        Person.resetNumInfected();
         people.clear();
         for(int i = 0; i<population; i++){
             people.add(new Person()); // adds population (.08 are infected)
         }
         point.clear();
         time = 0;
-        Person.resetNumInfected();
+
     }
 
     public static double getPercent(){
         return percent * .01;
     }
 
+    public static double getInfected(){
+        return infectedPop * .01;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

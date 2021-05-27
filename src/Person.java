@@ -12,7 +12,7 @@ public class Person {
     int recoveryTime;
 
     static double percentDist;
-
+    static double infected;
     static int numInfected = 0;
 
 
@@ -21,9 +21,11 @@ public class Person {
         x = (int)(Math.random()*790+0);
         y = (int)(Math.random()*590+0);
 
-        if(Math.random()<.08){
+        infected = CFrame.getInfected();
+
+        if(Math.random()<infected){
             status = 1;
-            numInfected+=1;// 8 percent of original population will be infected
+            numInfected+=1;
         }
 
         percentDist = CFrame.getPercent();
